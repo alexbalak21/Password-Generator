@@ -1,0 +1,114 @@
+// ------------------------------------------------------------
+// CORE (must be first, in this exact order)
+// ------------------------------------------------------------
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+
+// ------------------------------------------------------------
+// BASE + LAYOUT (required for container, row, spacing, flex)
+// ------------------------------------------------------------
+@import "bootstrap/scss/root";
+@import "bootstrap/scss/reboot";
+@import "bootstrap/scss/type";
+@import "bootstrap/scss/containers";
+@import "bootstrap/scss/grid";
+@import "bootstrap/scss/helpers";
+
+// ------------------------------------------------------------
+// COMPONENTS YOU USE
+// ------------------------------------------------------------
+@import "bootstrap/scss/buttons";
+@import "bootstrap/scss/forms";
+@import "bootstrap/scss/transitions";
+@import "bootstrap/scss/tooltip";
+@import "bootstrap/scss/popover";
+
+
+// ------------------------------------------------------------
+// UTILITIES (MUST BE LAST)
+// ------------------------------------------------------------
+@import "bootstrap/scss/utilities";
+@import "bootstrap/scss/utilities/api";
+
+// ------------------------------------------------------------
+// YOUR CUSTOM CSS
+// ------------------------------------------------------------
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  appearance: none;
+}
+
+input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: initial !important;
+}
+
+input[type="checkbox"] {
+  height: 25px;
+  width: 25px;
+}
+
+label {
+  font-size: 20px !important;
+}
+
+.form-check-input:checked {
+  background-color: #198754;
+  border-color: #198754;
+}
+
+#output {
+  max-width: 450px;
+  height: 46px;
+  font-size: 16px;
+}
+
+@media (max-width: 767px) {
+  #copy {
+    margin-top: 30px;
+    margin-bottom: 16px;
+  }
+}
+
+@media (min-width: 768px) {
+  #output {
+    margin-left: 108px;
+  }
+}
+
+#length-container {
+  margin-left: 24px;
+}
+
+html[data-bs-theme="light"] .tooltip {
+  --bs-tooltip-bg: LightGray;
+  --bs-tooltip-color: #000;
+}
+
+html[data-bs-theme="dark"] .tooltip {
+  --bs-tooltip-bg: #000;
+  --bs-tooltip-color: #fff;
+}
+
+#themeToggle svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+#sun svg path {
+  stroke: currentColor;
+}
+
+#themeToggle:hover {
+  background-color: DimGray;
+}
+
+#copy svg {
+  width: 18px;
+  height: 18px;
+  color: white;
+}
