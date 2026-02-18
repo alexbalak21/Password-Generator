@@ -17,6 +17,7 @@ A modern, lightweight password generator web application built with vanilla Java
   - Numbers (0-9)
   - Common symbols (?!@#$%^&*+)
   - Special symbols (/()[],.:;=-_)
+  - Custom symbols: Enter your own set of symbols (spaces will be ignored)
 - **Adjustable Length**: Set password length from 1 to 64 characters using +/- buttons or direct input
 - **One-Click Generation**: Generate passwords with a single click
 
@@ -39,22 +40,17 @@ A modern, lightweight password generator web application built with vanilla Java
 ## Project Structure
 
 ```
-Password_Generator/
-├── index.html              # Main application page
-├── password.html           # Flask template for deployment
-├── README.md              # This file
-├── css/
-│   ├── bootstrap.min.css  # Bootstrap framework
-│   └── style.css          # Custom styling
-├── js/
-│   ├── main.js            # Application entry point and initialization
-│   ├── generator.js       # Password generation logic
-│   ├── copy.js            # Copy to clipboard functionality
-│   ├── length.js          # Password length controls
-│   ├── theme.js           # Theme management
-│   └── bootstrap.bundle.min.js # Bootstrap JavaScript
-└── static/
-    └── icons/             # SVG icon files (moon.svg, sun.svg, copy.svg)
+Password-Generator/
+├── password-generator.html      # Main application page
+├── README.md                   # This file
+├── assets/
+│   ├── css/
+│   │   └── passgen.css         # Custom styling
+│   ├── icons/                  # SVG icon files (moon.svg, sun.svg, copy.svg)
+│   └── js/
+│       ├── passgen.js          # Application logic
+│       └── passgen.min.js      # Minified JS
+├── project_images/             # Screenshots and images
 ```
 
 ## Technologies Used
@@ -69,8 +65,9 @@ Password_Generator/
 
 1. **Open the Application**: Open `index.html` in any modern web browser
 2. **Configure Password Options**:
-   - Check/uncheck character type options (Lowercase, Uppercase, Numbers, Symbols)
-   - Adjust password length using the +/- buttons or by entering a number directly
+  - Check/uncheck character type options (Lowercase, Uppercase, Numbers, Symbols)
+  - For custom symbols, check "Specific symbols" and enter your own characters (spaces will be ignored)
+  - Adjust password length using the +/- buttons or by entering a number directly
 3. **Generate Password**: Click the "Generate" button to create a new password
 4. **Copy Password**: Click the "Copy" button to copy the password to your clipboard
 5. **Toggle Theme**: Click the moon/sun icon in the top-right corner to switch themes
@@ -107,7 +104,7 @@ Works on all modern browsers supporting:
 ## Customization
 
 ### Modify Character Sets
-Edit `js/generator.js` to change available characters:
+Edit `assets/js/passgen.js` to change available characters:
 ```javascript
 const symbols = "?!@#$%^&*+"; // Modify this
 const spec_symbols = "/()[],.:;=-_"; // Or this
@@ -130,5 +127,5 @@ Open source project. Feel free to use and modify as needed.
 ## Notes
 
 - Generated passwords are created locally in your browser—no data is sent to servers
-- The application loads SVG icons from `/static/icons/` directory
+- The application loads SVG icons from `/assets/icons/` directory
 - Passwords are generated using `Math.random()` for immediate use; for cryptographic applications, consider using `crypto.getRandomValues()`

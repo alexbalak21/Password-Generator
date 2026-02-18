@@ -125,9 +125,9 @@ async function initApp() {
   const generateBtn = document.getElementById("generate");
 
   // Load icons
-  await loadSVG("moon", "/assets/icons/moon.svg");
-  await loadSVG("sun", "/assets/icons/sun.svg");
-  await loadSVG("copyIcon", "/assets/icons/copy.svg");
+  await loadSVG("moon", "assets/icons/moon.svg");
+  await loadSVG("sun", "assets/icons/sun.svg");
+  await loadSVG("copyIcon", "assets/icons/copy.svg");
 
   // Theme
   applyTheme(getSystemTheme());
