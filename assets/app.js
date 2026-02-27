@@ -158,14 +158,16 @@ async function loadSVG(id, file) {
 // App initialization
 // =========================
 
+const ICON_FOLDER = "/apps/passgen/assets/icons/";
+
 async function initApp() {
   const output = document.getElementById("output");
   const copyBtn = document.getElementById("copy");
   const generateBtn = document.getElementById("generate");
 
-  await loadSVG("moon", "assets/icons/moon.svg");
-  await loadSVG("sun", "assets/icons/sun.svg");
-  await loadSVG("copyIcon", "assets/icons/copy.svg");
+  await loadSVG("moon", ICON_FOLDER + "moon.svg");
+  await loadSVG("sun", ICON_FOLDER + "sun.svg");
+  await loadSVG("copyIcon", ICON_FOLDER + "copy.svg");
 
   applyTheme(getSystemTheme());
   initThemeToggle();
