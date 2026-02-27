@@ -1,4 +1,7 @@
-// Theme functions
+// =========================
+// Theme handling
+// =========================
+
 const html = document.documentElement;
 
 function getSystemTheme() {
@@ -12,15 +15,13 @@ function applyTheme(theme) {
 
   html.setAttribute("data-bs-theme", theme);
 
-  if (theme === "dark") {
-    sun.classList.remove("d-none");
-    moon.classList.add("d-none");
-    themeToggle.classList.replace("btn-outline-dark", "btn-outline-light");
-  } else {
-    moon.classList.remove("d-none");
-    sun.classList.add("d-none");
-    themeToggle.classList.replace("btn-outline-light", "btn-outline-dark");
-  }
+  const isDark = theme === "dark";
+
+  sun.classList.toggle("d-none", !isDark);
+  moon.classList.toggle("d-none", isDark);
+
+  themeToggle.classList.toggle("btn-outline-dark", !isDark);
+  themeToggle.classList.toggle("btn-outline-light", isDark);
 }
 
 function initThemeToggle() {
@@ -28,28 +29,28 @@ function initThemeToggle() {
 
   themeToggle.addEventListener("click", () => {
     const current = html.getAttribute("data-bs-theme");
-    const next = current === "dark" ? "light" : "dark";
-    applyTheme(next);
+    applyTheme(current === "dark" ? "light" : "dark");
   });
 }
 
-// Copy button function
+
+
+// =========================
+// Copy button
+// =========================
+
 function initCopyButton(copyBtn, output) {
-  const tooltip = new bootstrap.Tooltip(copyBtn, {trigger: "manual"});
+  const tooltip = new bootstrap.Tooltip(copyBtn, { trigger: "manual" });
   const originalHTML = copyBtn.innerHTML;
 
   copyBtn.addEventListener("click", () => {
     navigator.clipboard.writeText(output.value);
 
-    // Show tooltip
     tooltip.show();
-
-    // Visual feedback
     copyBtn.innerText = "Copied!";
     copyBtn.classList.replace("btn-success", "btn-secondary");
     copyBtn.disabled = true;
 
-    // Restore after delay
     setTimeout(() => {
       tooltip.hide();
       copyBtn.innerHTML = originalHTML;
@@ -59,46 +60,70 @@ function initCopyButton(copyBtn, output) {
   });
 }
 
-// Password generator function
+
+
+// =========================
+// Password generator
+// =========================
+
 const lowercase = "abcdefghijklmnopqrstuvwxyz";
 const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const numbers = "0123456789";
-const symbols = "?!@#$%^&*+";
-const spec_symbols = document.getElementById("spec_symbols_content");
+const numbers   = "0123456789";
+const symbols   = "!#$%&()*+,.;=?@[]^_{}~";
+
+const specSymbolsInput = document.getElementById("spec_symbols_content");
 
 function getChar(str) {
   return str[Math.floor(Math.random() * str.length)];
 }
 
-function generatePassword() {
-  let possibles = "";
-
-  if (document.getElementById("Lowercase").checked) possibles += lowercase;
-  if (document.getElementById("Uppercase").checked) possibles += uppercase;
-  if (document.getElementById("Numbers").checked) possibles += numbers;
-  if (document.getElementById("Symbols").checked) possibles += symbols;
-  if (document.getElementById("spec_symbols").checked) {
-    let customSymbols = spec_symbols.value;
-    if (customSymbols) {
-      customSymbols = customSymbols.replace(/\s+/g, "");
-      possibles += customSymbols;
-      console.log(customSymbols);
-      
-    }
-  }
-
-  const length = Number(document.getElementById("length").value);
-  let result = "";
-
-  for (let i = 0; i < length; i++) {
-    result += getChar(possibles);
-  }
-  
-
-  return result;
+function dedupe(str) {
+  return [...new Set(str)].join("");
 }
 
-// Length buttons function
+function generatePassword() {
+  let pool = "";
+
+  const useLower   = document.getElementById("Lowercase").checked;
+  const useUpper   = document.getElementById("Uppercase").checked;
+  const useNumbers = document.getElementById("Numbers").checked;
+  const useSymbols = document.getElementById("Symbols").checked;
+  const useCustom  = document.getElementById("spec_symbols").checked;
+
+  if (useLower)   pool += lowercase;
+  if (useUpper)   pool += uppercase;
+  if (useNumbers) pool += numbers;
+  if (useSymbols) pool += symbols;
+
+  if (useCustom) {
+    let custom = specSymbolsInput.value || "";
+    custom = custom.replace(/\s+/g, "");
+    pool += custom;
+  }
+
+  pool = dedupe(pool);
+
+  if (pool.length === 0) {
+    console.error("No character types selected.");
+    return "";
+  }
+
+  const length = Number(document.getElementById("length").value) || 16;
+  let password = "";
+
+  for (let i = 0; i < length; i++) {
+    password += getChar(pool);
+  }
+
+  return password;
+}
+
+
+
+// =========================
+// Length buttons
+// =========================
+
 function initLengthButtons() {
   const length = document.getElementById("length");
 
@@ -111,42 +136,48 @@ function initLengthButtons() {
   });
 }
 
-// Load SVG helper
+
+
+// =========================
+// SVG loader
+// =========================
+
 async function loadSVG(id, file) {
   const container = document.getElementById(id);
-  const svg = await fetch(file).then((res) => res.text());
-  container.innerHTML = svg;
+  try {
+    const svg = await fetch(file).then(res => res.text());
+    container.innerHTML = svg;
+  } catch (err) {
+    console.error("Failed to load SVG:", file, err);
+  }
 }
 
-// Initialize app
+
+
+// =========================
+// App initialization
+// =========================
+
 async function initApp() {
   const output = document.getElementById("output");
   const copyBtn = document.getElementById("copy");
   const generateBtn = document.getElementById("generate");
 
-  // Load icons
   await loadSVG("moon", "assets/icons/moon.svg");
   await loadSVG("sun", "assets/icons/sun.svg");
   await loadSVG("copyIcon", "assets/icons/copy.svg");
 
-  // Theme
   applyTheme(getSystemTheme());
   initThemeToggle();
 
-  // Copy button
   initCopyButton(copyBtn, output);
-
-  // Length buttons
   initLengthButtons();
 
-  // Generator button
   generateBtn.addEventListener("click", () => {
     output.value = generatePassword();
   });
 
-  // Generate once on load
   output.value = generatePassword();
 }
 
-// Start the app
 initApp();
