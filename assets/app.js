@@ -158,7 +158,8 @@ async function loadSVG(id, file) {
 // App initialization
 // =========================
 
-const ICON_FOLDER = "/apps/passgen/assets/icons/";
+const currentFolder = window.location.pathname.replace(/\/[^/]*$/, "/");
+const ICON_FOLDER = currentFolder + "assets/icons/";
 
 async function initApp() {
   const output = document.getElementById("output");
